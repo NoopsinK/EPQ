@@ -56,13 +56,14 @@ const objects = []
 function startGame() {
   gameArea.start()
 
+  socket = io.connect('http://localhost:3000')
+
   //create new component for player, at the canvas center
-  player = new component(30, 30, "green", 375, 250, "circle", false)
+  player = new component(socket.id, 30, 30, "green", 375, 250, "circle", false)
   objects.push(player)
   //enemy = new component(30, 30, "blue", 375, 450, "circle", true)
   //objects.push(enemy)
 
-  socket = io.connect('http://localhost:3000')
   socket.on('info', drawEnemy)
 }
 
@@ -156,6 +157,7 @@ function updateGameArea() {
 
   //message to send to server
   var data = {
+    id: player.id,
     x: player.xpos,
     y: player.ypos,
     isTagged: player.isTagged,

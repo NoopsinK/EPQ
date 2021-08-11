@@ -1,5 +1,6 @@
 //component object constructor
-function component(width, height, mainColour, xpos, ypos, shape, isTagged){
+function component(id, width, height, mainColour, xpos, ypos, shape, isTagged){
+  this.id = id
   this.width = width
   this.height = height
   this.xpos = xpos
