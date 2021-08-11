@@ -57,6 +57,8 @@ function startGame() {
   gameArea.start()
 
   socket = io.connect('http://localhost:3000')
+  socket.on('start', newEnemy)
+  socket.on('update', updateEnemy)
 
   //create new component for player, at the canvas center
   player = new component(socket.id, 30, 30, "green", 375, 250, "circle", false)
@@ -64,22 +66,32 @@ function startGame() {
   //enemy = new component(30, 30, "blue", 375, 450, "circle", true)
   //objects.push(enemy)
 
-  socket.on('info', drawEnemy)
+  var data = {
+    id: player.id,
+    x: player.xpos,
+    y: player.ypos,
+    isTagged: player.isTagged,
+    isImmume: player.isImmune
+  }
+
+  //send message - name, data
+  socket.emit('start', data)
 }
 
 //make enemy object?
-function drawEnemy(data){
-  context = gameArea.context
-  if (data.isTagged){
-    context.fillStyle = "red"
-  } else {
-    context.fillStyle = "blue"
+function newEnemy(data){
+    var enemy = new component(data.id, 30, 30, "blue", data.x, data.y, "circle", false)
+    enemies.push(enemy)
+}
+
+function updateEnemy(data){
+  //find enemy with the corresponding id and update its pos
+  for (let i = 0; i < enemies.length; i++){
+    if (data.id === enemies[i].id){
+      enemies[i].xpos = data.x
+      enemies[i].ypos = data.y
+    }
   }
-
-
-  context.beginPath()
-  context.arc(data.x, data.y, 30, 0, 2 * Math.PI)
-  context.fill()
 }
 
 //this will happen the most
@@ -154,7 +166,9 @@ function updateGameArea() {
   //all the components into an array and looping through to update them?
   //redraws component
   player.update()
-
+  for (let i = 0; i < enemies.length; i++){
+    enemies[i].update()
+  }
   //message to send to server
   var data = {
     id: player.id,
