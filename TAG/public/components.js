@@ -1,5 +1,5 @@
 //component object constructor
-function component(id, width, height, mainColour, xpos, ypos, shape, isTagged){
+function component(id, width, height, mainColour, xpos, ypos, isTagged){
   this.id = id
   this.width = width
   this.height = height
@@ -9,7 +9,6 @@ function component(id, width, height, mainColour, xpos, ypos, shape, isTagged){
   this.yspeed = 0
   this.mainColour = mainColour
   this.displayColour = mainColour
-  this.shape = shape
 
   //istagged will actually always be initialised to false
   //something else will make this true for game starts later
@@ -22,14 +21,11 @@ function component(id, width, height, mainColour, xpos, ypos, shape, isTagged){
     context = gameArea.context
     context.fillStyle = this.displayColour
 
-    if (this.shape === "circle"){
-      //circle: arc(x coord, y coord, radius, starting angle (rad), ending angle(rad))
-      context.beginPath()
-      context.arc(this.xpos, this.ypos, this.width, 0, 2 * Math.PI)
-      context.fill()
-    } else if (this.shape === "rect"){
-      context.fillRect(this.xpos, this.ypos, this.width, this.height)
-    }
+    //circle: arc(x coord, y coord, radius, starting angle (rad), ending angle(rad))
+    context.beginPath()
+    context.arc(this.xpos, this.ypos, this.width, 0, 2 * Math.PI)
+    context.fill()
+
   }
   this.newPos = function() {
     //update positions based on speed values

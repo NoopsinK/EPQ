@@ -26,7 +26,7 @@ document.getElementById("startBtn").addEventListener("DOMContentLoaded", startGa
 //document.getElementById("multiBtn").addEventListener("DOMContentLoaded", startMultiGame)
 
 var player
-var enemies = []
+var players = []
 var socket
 
 //keyCodes, all in one place
@@ -59,27 +59,26 @@ function startGame() {
   socket = io.connect('http://localhost:3000')
 
   //create new component for player, at the canvas center
-  player = new component(socket.id, 30, 30, "green", 375, 250, "circle", false)
-  objects.push(player)
+  player = new component(socket.id, 30, 30, "green", 375, 250, false)
   //enemy = new component(30, 30, "blue", 375, 450, "circle", true)
-  //objects.push(enemy)
+  players.push(player)
 
-  socket.on('info', drawEnemy)
-}
-
-//make enemy object?
-function drawEnemy(data){
-  context = gameArea.context
-  if (data.isTagged){
-    context.fillStyle = "red"
-  } else {
-    context.fillStyle = "blue"
+  //message to send to server
+  var data = {
+    id: player.id,
+    x: player.xpos,
+    y: player.ypos,
+    isTagged: player.isTagged,
+    isImmume: player.isImmune
   }
 
+  socket.emit('start', data)
 
-  context.beginPath()
-  context.arc(data.x, data.y, 30, 0, 2 * Math.PI)
-  context.fill()
+  //sync local players array with the server's with each pulse
+  socket.on('pulse', function(data){
+    players = data
+    console.log('received pulse')
+  })
 }
 
 //this will happen the most
@@ -150,10 +149,28 @@ function updateGameArea() {
   //calculate new positions
   player.newPos()
 
-  //update everything - might be a quicker way of doing this by putting
-  //all the components into an array and looping through to update them?
-  //redraws component
-  player.update()
+  //redraw all players
+  for (let i = 0; i < players.length; i++){
+
+    //draw corresponding shape
+    context = gameArea.context
+
+    if (players[i].id === player.id){
+      context.fillStyle = "green"
+      console.log('drawing self')
+    } else {
+      context.fillStyle = "blue"
+      console.log('drawing enemy')
+    }
+
+    //circle: arc(x coord, y coord, radius, starting angle (rad), ending angle(rad))
+    context.beginPath()
+    //width is 30
+    context.arc(players[i].x, players[i].y, 30, 0, 2 * Math.PI)
+    context.fill()
+
+  }
+  //player.update()
 
   //message to send to server
   var data = {
@@ -165,7 +182,7 @@ function updateGameArea() {
   }
 
   //send message - name, data
-  socket.emit('info', data)
+  socket.emit('update', data)
 }
 
 //draw canvas and add element to html
