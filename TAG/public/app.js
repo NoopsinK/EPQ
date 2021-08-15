@@ -63,13 +63,6 @@ function startGame() {
   //enemy = new component(30, 30, "blue", 375, 450, "circle", true)
   //players.push(player)
 
-  //listen for info
-  socket.on('info', function(data){
-    player.id = data.id
-    player.isTagged = data.isTagged
-  })
-  console.log('My id: ' + player.id)
-
   //message to send to server
   var data = {
     id: player.id,
@@ -86,6 +79,15 @@ function startGame() {
     players = data
     console.log('received pulse')
   })
+
+  //listen for info
+  socket.on('info', function(data){
+    player.id = data.id
+    player.isTagged = data.isTagged
+    console.log('My id: ' + player.id)
+    console.log("I'm tagged? " + player.isTagged)
+  })
+
 }
 
 //this will happen the most
@@ -163,7 +165,11 @@ function updateGameArea() {
     context = gameArea.context
 
     if (players[i].id === player.id){
-      context.fillStyle = "green"
+      if (player.isTagged === true){
+        context.fillStyle = "red"
+      } else {
+        context.fillStyle = "green"
+      }
       console.log('drawing self')
     } else {
       context.fillStyle = "blue"
