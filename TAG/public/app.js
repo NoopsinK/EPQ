@@ -51,7 +51,7 @@ var dB
 var wB
 var sB
 
-const objects = []
+var objects = []
 
 function startGame() {
   gameArea.start()
@@ -61,7 +61,14 @@ function startGame() {
   //create new component for player, at the canvas center
   player = new component(socket.id, 30, 30, "green", 375, 250, false)
   //enemy = new component(30, 30, "blue", 375, 450, "circle", true)
-  players.push(player)
+  //players.push(player)
+
+  //listen for info
+  socket.on('info', function(data){
+    player.id = data.id
+    player.isTagged = data.isTagged
+  })
+  console.log('My id: ' + player.id)
 
   //message to send to server
   var data = {

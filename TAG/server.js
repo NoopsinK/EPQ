@@ -61,7 +61,16 @@ io.sockets.on(
       //first player in is it
       if (players.length === 0){
         player.isTagged = true
+        console.log('Tagging first guest...')
       }
+
+      //send id and tag info to this player
+      var data = {
+        id: socket.id, //could also be player.isTagged?
+        isTagged: player.isTagged
+      }
+
+      io.to(socket.id).emit('info', data)
       players.push(player)
     })
 
