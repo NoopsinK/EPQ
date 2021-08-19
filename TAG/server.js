@@ -7,6 +7,21 @@ function Player(id, x, y, isTagged, isImmune){
   this.isTagged = isTagged
   this.isImmune = isImmune
 }
+
+//check if this component has collided with the given other component
+function hasCollided(player1, player2, radius1, radius2){
+  //take the centres, then check if the distance
+  //is less than the sum of the two radii
+  var xdistance = player1.x - player2.x
+  var ydistance = player1.y - player2.y
+  var distance = Math.sqrt( Math.pow(xdistance,2) + Math.pow(ydistance,2))
+
+  if (distance < (radius1) + (radius2)){
+    return true
+  } else {
+    return false
+  }
+}
 //import express - this var is a function that makes an express app
 var express = require('express')
 //the resulting app
@@ -76,12 +91,75 @@ io.sockets.on(
 
     socket.on('update', function(data) {
 
+      var thisPlayer = {
+        id: null,
+        x: null,
+        y: null,
+        isTagged: null,
+        isImmune: null
+      }
       for (let i = 0; i < players.length; i++) {
         if (players[i].id === socket.id) {
+          console.log('Setting thisPlayer')
+          /*
+          thisPlayer = players[i]
+          thisPlayer.x = data.x
+          thisPlayer.y = data.y
+          thisPlayer.isTagged = data.isTagged
+          thisPlayer.isImmune = data.isImmune
+          */
           players[i].x = data.x
           players[i].y = data.y
           players[i].isTagged = data.isTagged
           players[i].isImmune = data.isImmune
+
+          thisPlayer.id = data.id
+          thisPlayer.x = data.x
+          thisPlayer.y = data.y
+          thisPlayer.isTagged = data.isTagged
+          thisPlayer.isImmune = data.isImmune
+        }
+      }
+
+      //check for collisions, tag accordingly
+      for (let i = 0; i < players.length; i++){
+        if (thisPlayer.id != players[i].id){
+          if (hasCollided(thisPlayer, players[i], 30, 30)){
+            //console.log('collision')
+            //check which of the two is currently tagged, then tag the other
+            if (thisPlayer.isTagged === true &&
+              thisPlayer.isImmune === false &&
+              players[i].isImmune === false){
+                //change x and y pos to prevent immediate re-tagging?
+                console.log('tagging!')
+                thisPlayer.isTagged = false
+                players[i].isTagged = true
+                players[i].isImmune = true
+                thisPlayer.isImmune = true
+
+                //wait 5 seconds, then remove immunity - should make into subroutine?
+                setTimeout(() => {
+                  console.log('removing immunity')
+                  players[i].isImmune = false
+                  thisPlayer.isImmune = false
+                }, 5000)
+            } else if (players[i].isTagged === true &&
+              thisPlayer.isImmune === false &&
+              players[i].isImmune === false){
+
+                console.log('tagging!')
+                thisPlayer.isTagged = true
+                players[i].isTagged = false
+                players[i].isImmune = true
+                thisPlayer.isImmune = true
+
+                setTimeout(() => {
+                  console.log('removing immunity')
+                  players[i].isImmune = false
+                  thisPlayer.isImmune = false
+                }, 5000)
+            }
+          }
         }
       }
     })

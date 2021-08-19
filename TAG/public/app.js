@@ -167,12 +167,18 @@ function updateGameArea() {
     if (players[i].id === player.id){
       if (player.isTagged === true){
         context.fillStyle = "red"
+        console.log('Im tagged')
       } else {
         context.fillStyle = "green"
+        console.log('im not tagged')
       }
       console.log('drawing self')
     } else {
-      context.fillStyle = "blue"
+      if (players[i].isTagged === true){
+        context.fillStyle = "red"
+      } else {
+        context.fillStyle = "blue"
+      }
       console.log('drawing enemy')
     }
 

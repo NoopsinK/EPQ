@@ -45,42 +45,4 @@ function component(id, width, height, mainColour, xpos, ypos, isTagged){
       }
 
   }
-
-  //check if this component has collided with the given other component
-  this.hasCollided = function(otherX, otherY, otherR){
-    //rectangle collision
-    /*
-    var myLeft = this.xpos
-    var myRight = this.xpos + (this.width)
-    var myTop = this.ypos
-    var myBottom = this.ypos + (this.height)
-
-    var otherLeft = otherComp.xpos
-    var otherRight = otherComp.xpos + (otherComp.width)
-    var otherTop = otherComp.ypos
-    var otherBottom = otherComp.ypos + (otherComp.height)
-
-    if (
-      (myBottom < otherTop) ||
-      (myTop > otherBottom) ||
-      (myRight < otherLeft) ||
-      (myLeft > otherRight)){
-        return true
-    } else {
-      return false
-    }
-    */
-
-    //for circles - take the centres, then check if the distance
-    //is less than the sum of the two radii
-    var xdistance = this.xpos - otherX
-    var ydistance = this.ypos - otherY
-    var distance = Math.sqrt( Math.pow(xdistance,2) + Math.pow(ydistance,2))
-
-    if (distance < (this.width) + (otherR)){
-      return true
-    } else {
-      return false
-    }
-  }
 }
