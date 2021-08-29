@@ -69,15 +69,23 @@ function startGame() {
     x: player.xpos,
     y: player.ypos,
     isTagged: player.isTagged,
-    isImmume: player.isImmune
+    isImmune: player.isImmune
   }
+
+  console.log('Start, immune? ' + player.isImmune)
 
   socket.emit('start', data)
 
   //sync local players array with the server's with each pulse
   socket.on('pulse', function(data){
     players = data
-    console.log('received pulse')
+    //console.log('received pulse')
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id === player.id) {
+        player.isTagged = players[i].isTagged
+        player.isImmune = players[i].isImmune
+      }
+    }
   })
 
   //listen for info
@@ -87,7 +95,7 @@ function startGame() {
     console.log('My id: ' + player.id)
     console.log("I'm tagged? " + player.isTagged)
   })
-
+  
 }
 
 //this will happen the most
@@ -172,14 +180,14 @@ function updateGameArea() {
         context.fillStyle = "green"
         console.log('im not tagged')
       }
-      console.log('drawing self')
+      //console.log('drawing self')
     } else {
       if (players[i].isTagged === true){
         context.fillStyle = "red"
       } else {
         context.fillStyle = "blue"
       }
-      console.log('drawing enemy')
+      //console.log('drawing enemy')
     }
 
     //circle: arc(x coord, y coord, radius, starting angle (rad), ending angle(rad))
@@ -197,11 +205,12 @@ function updateGameArea() {
     x: player.xpos,
     y: player.ypos,
     isTagged: player.isTagged,
-    isImmume: player.isImmune
+    isImmune: player.isImmune
   }
 
   //send message - name, data
   socket.emit('update', data)
+  console.log('Immune? ' + player.isImmune)
 }
 
 //draw canvas and add element to html

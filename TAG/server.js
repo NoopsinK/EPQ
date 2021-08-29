@@ -98,9 +98,10 @@ io.sockets.on(
         isTagged: null,
         isImmune: null
       }
+      var thisPlayerIndex = 0
       for (let i = 0; i < players.length; i++) {
         if (players[i].id === socket.id) {
-          console.log('Setting thisPlayer')
+          //console.log('Setting thisPlayer')
           /*
           thisPlayer = players[i]
           thisPlayer.x = data.x
@@ -113,6 +114,8 @@ io.sockets.on(
           players[i].isTagged = data.isTagged
           players[i].isImmune = data.isImmune
 
+          thisPlayerIndex = i
+
           thisPlayer.id = data.id
           thisPlayer.x = data.x
           thisPlayer.y = data.y
@@ -123,41 +126,47 @@ io.sockets.on(
 
       //check for collisions, tag accordingly
       for (let i = 0; i < players.length; i++){
-        if (thisPlayer.id != players[i].id){
-          if (hasCollided(thisPlayer, players[i], 30, 30)){
-            //console.log('collision')
+        if (players[thisPlayerIndex].id != players[i].id){
+          if (hasCollided(players[thisPlayerIndex], players[i], 30, 30)){
+            console.log('collision')
+            console.log('thisPlayer.isTagged: ' + players[thisPlayerIndex].isTagged)
+            console.log('thisPlayer.isImmune: ' + players[thisPlayerIndex].isImmune)
+            console.log('players[i].isTagged: ' + players[i].isTagged)
+            console.log('players[i].isImmune: ' + players[i].isImmune)
             //check which of the two is currently tagged, then tag the other
-            if (thisPlayer.isTagged === true &&
-              thisPlayer.isImmune === false &&
-              players[i].isImmune === false){
-                //change x and y pos to prevent immediate re-tagging?
-                console.log('tagging!')
-                thisPlayer.isTagged = false
-                players[i].isTagged = true
-                players[i].isImmune = true
-                thisPlayer.isImmune = true
+            if (players[thisPlayerIndex].isTagged === true/* && players[i].isImmune === false*/){
+              //change x and y pos to prevent immediate re-tagging?
+              console.log('tagging!')
+              players[thisPlayerIndex].isTagged = false
+              players[i].isTagged = true
+              //players[i].isImmune = true
+              //players[thisPlayerIndex].isImmune = true
 
-                //wait 5 seconds, then remove immunity - should make into subroutine?
-                setTimeout(() => {
-                  console.log('removing immunity')
-                  players[i].isImmune = false
-                  thisPlayer.isImmune = false
-                }, 5000)
-            } else if (players[i].isTagged === true &&
-              thisPlayer.isImmune === false &&
-              players[i].isImmune === false){
+              /*
+              //wait 5 seconds, then remove immunity - should make into subroutine?
+              setTimeout(function(){
+                console.log('removing immunity')
+                players[i].isImmune = false
+                players[thisPlayerIndex].isImmune = false
+              }, 10000)
+              */
+            } else if (players[i].isTagged === true/* && players[thisPlayerIndex].isImmune === false*/){
 
-                console.log('tagging!')
-                thisPlayer.isTagged = true
-                players[i].isTagged = false
-                players[i].isImmune = true
-                thisPlayer.isImmune = true
+              console.log('tagging!')
+              players[thisPlayerIndex].isTagged = true
+              players[i].isTagged = false
+              //players[i].isImmune = true
+              //players[thisPlayerIndex].isImmune = true
 
-                setTimeout(() => {
-                  console.log('removing immunity')
-                  players[i].isImmune = false
-                  thisPlayer.isImmune = false
-                }, 5000)
+              /*
+              setTimeout(function(){
+                console.log('removing immunity')
+                players[i].isImmune = false
+                players[thisPlayerIndex].isImmune = false
+              }, 10000)
+              */
+            } else {
+              console.log('I am unable to tag for whatever reason')
             }
           }
         }
