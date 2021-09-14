@@ -54,6 +54,9 @@ var sB
 var objects = []
 
 function startGame() {
+  //hide start button and start start canvas
+  document.getElementById("startBtn").style.display="none";
+  document.getElementById("startCanvas").style.display="none";
   gameArea.start()
 
   socket = io.connect('http://localhost:3000')
@@ -95,7 +98,7 @@ function startGame() {
     console.log('My id: ' + player.id)
     console.log("I'm tagged? " + player.isTagged)
   })
-  
+
 }
 
 //this will happen the most
@@ -175,10 +178,10 @@ function updateGameArea() {
     if (players[i].id === player.id){
       if (player.isTagged === true){
         context.fillStyle = "red"
-        console.log('Im tagged')
+        console.log('tagged')
       } else {
         context.fillStyle = "green"
-        console.log('im not tagged')
+        console.log('free')
       }
       //console.log('drawing self')
     } else {

@@ -1,4 +1,45 @@
+/*canvas is 750 x 500 px*/
+
 canvas {
+  z-index: 1;
   border-style: dashed;
   border-color: green;
+  background-image: url("background.jpg");
+  background-color: #99ffcc;
+  background-blend-mode: lighten;
+  background-size: contain;
+}
+
+button {
+  z-index: 2;
+  border-style: double;
+  border-width:5px;
+  border-color: green;
+  border-radius: 5px;
+
+  background-color: #66ffc2;
+
+  position: absolute;
+  top: 250px;
+  left: 375px;
+}
+
+#startCanvas {
+  width: 750px;
+  height: 500px;
+  border: 2px;
+  border-style: dashed;
+  border-color: green;
+
+  background-image: url("background.jpg");
+  background-color: #f2f2f2;
+  background-blend-mode: lighten;
+  background-size: contain;
+}
+
+#background {
+  /*background-image: url("background.jpg");*/
+  z-index: 0;
+  width: 750px;
+  height: 500px;
 }
