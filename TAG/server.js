@@ -27,8 +27,9 @@ var express = require('express')
 //the resulting app
 var app = express()
 
+var aPORT = process.env.PORT || 3000;
 //listen for messages on the port 3000
-var server = app.listen(3000)
+var server = app.listen(aPORT)
 
 //host everything in the 'public' directory so clients can see them
 app.use(express.static('public'))
