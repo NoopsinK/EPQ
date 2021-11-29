@@ -129,9 +129,12 @@ io.sockets.on(
       var lastTagged = null
       //check if anyone is tagged at all, then tag the last tagged
       var noneTagged = true
-      for (let i = 0; i < players.length; i++){
-        if (players[i].isTagged = true){
-          noneTagged = false
+
+      while (noneTagged === true){
+        for (let i = 0; i < players.length; i++){
+          if (players[i].isTagged = true){
+            noneTagged = false
+          }
         }
       }
 
