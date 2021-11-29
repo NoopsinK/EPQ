@@ -1,3 +1,9 @@
+var aPORT = process.env.PORT || 3000;
+//import express - this var is a function that makes an express app
+var express = require('express')
+//the resulting app
+var app = express()
+
 var players = []
 
 function Player(id, x, y, isTagged, isImmune){
@@ -22,12 +28,8 @@ function hasCollided(player1, player2, radius1, radius2){
     return false
   }
 }
-//import express - this var is a function that makes an express app
-var express = require('express')
-//the resulting app
-var app = express()
 
-var aPORT = process.env.PORT || 3000;
+
 //listen for messages on the port 3000
 var server = app.listen(aPORT)
 
