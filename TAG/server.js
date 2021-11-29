@@ -126,6 +126,7 @@ io.sockets.on(
           thisPlayer.isImmune = data.isImmune
         }
       }
+      var lastTagged = null
 
       //check for collisions, tag accordingly
       for (let i = 0; i < players.length; i++){
@@ -147,7 +148,8 @@ io.sockets.on(
               players[i].isTagged = true
               players[i].isImmune = true
 
-
+              //set the tagged player to lastTagged
+              lastTagged = players[i]
 
               //wait 5 seconds, then remove immunity - should make into subroutine?
               setTimeout(function(){
@@ -164,6 +166,8 @@ io.sockets.on(
               players[i].isTagged = false
               players[thisPlayerIndex].isImmune = true
 
+              //set the tagged player to lastTagged
+              lastTagged = players[thisPlayerIndex]
 
               setTimeout(function(){
                 console.log('removing immunity')
@@ -174,6 +178,17 @@ io.sockets.on(
             }
           }
         }
+      }
+      //check if anyone is tagged at all, then tag the last tagged
+      var noneTagged = true
+      for (let i = 0; i < players.length; i++){
+        if (players[i].isTagged = true){
+          noneTagged = false
+        }
+      }
+
+      if (noneTagged === true){
+        lastTagged.isTagged = true
       }
     })
 
