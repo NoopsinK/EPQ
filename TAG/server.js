@@ -148,14 +148,14 @@ io.sockets.on(
               //players[i].isImmune = true
 
 
-              /*
+
               //wait 5 seconds, then remove immunity - should make into subroutine?
               setTimeout(function(){
                 console.log('removing immunity')
                 players[i].isImmune = false
                 players[thisPlayerIndex].isImmune = false
               }, 10000)
-              */
+
             } else if (players[i].isTagged === true && players[thisPlayerIndex].isImmune === false){
 
               console.log('tagging!')
@@ -164,13 +164,13 @@ io.sockets.on(
               players[i].isTagged = false
               //players[thisPlayerIndex].isImmune = true
 
-              /*
+
               setTimeout(function(){
                 console.log('removing immunity')
                 players[i].isImmune = false
                 players[thisPlayerIndex].isImmune = false
               }, 10000)
-              */
+
             }
           }
         }
