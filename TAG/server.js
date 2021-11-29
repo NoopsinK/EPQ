@@ -155,8 +155,10 @@ io.sockets.on(
               console.log('tagging!')
               players[thisPlayerIndex].isImmune = true
               players[thisPlayerIndex].isTagged = false
-              players[i].isTagged = true
-              players[i].isImmune = true
+              if (noneTagged === true) {
+                players[i].isTagged = true
+                players[i].isImmune = true
+              }
 
               //set the tagged player to lastTagged
               lastTagged = players[i]
@@ -172,9 +174,12 @@ io.sockets.on(
 
               console.log('tagging!')
               players[i].isImmune = true
-              players[thisPlayerIndex].isTagged = true
               players[i].isTagged = false
-              players[thisPlayerIndex].isImmune = true
+
+              if (noneTagged === true){
+                players[thisPlayerIndex].isTagged = true
+                players[thisPlayerIndex].isImmune = true
+              }
 
               //set the tagged player to lastTagged
               lastTagged = players[thisPlayerIndex]
