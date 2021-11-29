@@ -194,11 +194,11 @@ io.sockets.on(
           }
         }
       }
-
+      /*
       if (noneTagged === true){
         lastTagged.isTagged = true
       }
-
+      */
     })
 
     socket.on('disconnect', function() {
