@@ -59,7 +59,7 @@ function startGame() {
   document.getElementById("startCanvas").style.display="none";
   gameArea.start()
 
-  socket = io.connect('http://localhost:3000')
+  socket = io.connect()
 
   //create new component for player, at the canvas center
   player = new component(socket.id, 30, 30, "green", 375, 250, false)
