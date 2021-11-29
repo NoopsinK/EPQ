@@ -127,6 +127,13 @@ io.sockets.on(
         }
       }
       var lastTagged = null
+      //check if anyone is tagged at all, then tag the last tagged
+      var noneTagged = true
+      for (let i = 0; i < players.length; i++){
+        if (players[i].isTagged = true){
+          noneTagged = false
+        }
+      }
 
       //check for collisions, tag accordingly
       for (let i = 0; i < players.length; i++){
@@ -179,17 +186,11 @@ io.sockets.on(
           }
         }
       }
-      //check if anyone is tagged at all, then tag the last tagged
-      var noneTagged = true
-      for (let i = 0; i < players.length; i++){
-        if (players[i].isTagged = true){
-          noneTagged = false
-        }
-      }
 
       if (noneTagged === true){
         lastTagged.isTagged = true
       }
+
     })
 
     socket.on('disconnect', function() {
