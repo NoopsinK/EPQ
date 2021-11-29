@@ -79,6 +79,7 @@ io.sockets.on(
       //first player in is it
       if (players.length === 0){
         player.isTagged = true
+        var lastTagged = player
         console.log('Tagging first guest...')
       }
 
@@ -126,7 +127,6 @@ io.sockets.on(
           thisPlayer.isImmune = data.isImmune
         }
       }
-      var lastTagged = null
       //check if anyone is tagged at all, then tag the last tagged
       var noneTagged = true
 
@@ -194,11 +194,10 @@ io.sockets.on(
           }
         }
       }
-      /*
+
       if (noneTagged === true){
         lastTagged.isTagged = true
       }
-      */
     })
 
     socket.on('disconnect', function() {
