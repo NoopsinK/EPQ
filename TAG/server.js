@@ -145,7 +145,7 @@ io.sockets.on(
               players[thisPlayerIndex].isImmune = true
               players[thisPlayerIndex].isTagged = false
               players[i].isTagged = true
-              //players[i].isImmune = true
+              players[i].isImmune = true
 
 
 
@@ -162,7 +162,7 @@ io.sockets.on(
               players[i].isImmune = true
               players[thisPlayerIndex].isTagged = true
               players[i].isTagged = false
-              //players[thisPlayerIndex].isImmune = true
+              players[thisPlayerIndex].isImmune = true
 
 
               setTimeout(function(){
